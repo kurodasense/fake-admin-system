@@ -10,8 +10,11 @@
   "compilerOptions": {
     "composite": true,
     "noEmit": true,
-    "module": "ESNext",
+    "module": "ESNext", // 目标代码需要使用的模块化方案
     "moduleResolution": "Bundler",
+    "skipLibCheck": true, // 跳过一些库的类型检测
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true, // 通常与上面的一起使用，是否可以es module和commonjs的语法一起使用
     "types": ["node"]
   }
 }
