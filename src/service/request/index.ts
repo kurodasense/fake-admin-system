@@ -2,6 +2,8 @@ import axios from "axios";
 import type { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import type { HYRequestConfig, HYRequestInterceptors } from "./type";
 import { ElLoading } from "element-plus";
+import useLoginStore from "@/stores/login/login";
+import localCache from "@/utils/cache";
 
 const DEFAULT_LOADING = true;
 
@@ -10,6 +12,7 @@ class HYRequest {
   interceptors?: HYRequestInterceptors; // 拦截器
   showLoading: boolean;
   loading?: any;
+  token?: string;
 
   constructor(config: HYRequestConfig) {
     // 创建axios实例
@@ -30,7 +33,6 @@ class HYRequest {
     // 添加所有的实例都有的拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        console.log("all request success");
         // 添加loading
         if (this.showLoading) {
           this.loading = ElLoading.service({
@@ -39,6 +41,10 @@ class HYRequest {
             background: "rgba(0, 0, 0, 0.5)"
           });
         }
+        // 添加token
+        const loginStore = useLoginStore();
+        if (loginStore.token != null) config.headers.Authorization = loginStore.token;
+
         return config;
       },
       (err) => {
@@ -48,13 +54,11 @@ class HYRequest {
     this.instance.interceptors.response.use(
       (res) => {
         // 移除loading
-        setTimeout(() => {
-          this.loading?.close();
-        }, 3000);
-        console.log("all response success");
+        this.loading?.close();
         return res.data;
       },
       (err) => {
+        this.loading?.close();
         return err;
       }
     );

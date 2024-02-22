@@ -1,3 +1,5 @@
+// https://documenter.getpostman.com/view/12387168/TzsfmQvw
+// http://123.207.32.32:5000
 // service 统一出口
 import HYRequest from "./request";
 
