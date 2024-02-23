@@ -37,7 +37,6 @@ const useLoginStore = defineStore("login", {
       const userMenus = userMenusResult.data;
       this.userMenus = userMenus;
       localCache.setCache("userMenus", userMenus);
-      console.log(userMenus);
 
       // 4.跳转到首页
       router.push("/main");

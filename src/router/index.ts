@@ -14,7 +14,7 @@ const router = createRouter({
 router.beforeEach((to) => {
   if (to.path !== "/login") {
     const token = localCache.getCache("token");
-    if (!token) return "/login";
+    if (token == null) return "/login";
   }
 });
 export default router;

@@ -3,7 +3,6 @@ import type { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import type { HYRequestConfig, HYRequestInterceptors } from "./type";
 import { ElLoading } from "element-plus";
 import useLoginStore from "@/stores/login/login";
-import localCache from "@/utils/cache";
 
 const DEFAULT_LOADING = true;
 
