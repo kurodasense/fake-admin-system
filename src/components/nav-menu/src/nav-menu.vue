@@ -23,7 +23,11 @@
             </template>
             <!-- 遍历里面的item -->
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item class="el-menu-item">
+              <el-menu-item
+                class="el-menu-item"
+                :index="subitem.id + ''"
+                @click="handleMenuItemClick(subitem)"
+              >
                 <i v-if="item.icon" :class="subitem.icon"></i>
                 <span>{{ subitem.name }}</span>
               </el-menu-item>
@@ -45,6 +49,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import useLoginStore from "@/stores/login/login";
+import { useRouter, type RouteRecordRaw } from "vue-router";
+import { mapMenusToRoutes } from "@/utils/map-menus";
 const loginStore = useLoginStore();
 const props = defineProps({
   collapse: {
@@ -53,6 +59,18 @@ const props = defineProps({
   }
 });
 const userMenus = computed(() => loginStore.userMenus);
+const router = useRouter();
+// mapMenusToRoutes(loginStore.userMenus).then((routes) => {
+//   routes.forEach((route: RouteRecordRaw) => {
+//     router.addRoute("main", route);
+//   });
+// });
+
+const handleMenuItemClick = (item: any) => {
+  router.push({
+    path: item.url ?? "/not-found"
+  });
+};
 </script>
 
 <style scoped lang="less">

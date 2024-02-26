@@ -36,8 +36,8 @@ const useLoginStore = defineStore("login", {
       const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id);
       const userMenus = userMenusResult.data;
       this.userMenus = userMenus;
-      localCache.setCache("userMenus", userMenus);
 
+      localCache.setCache("userMenus", userMenus);
       // 4.跳转到首页
       router.push("/main");
     },
