@@ -5,7 +5,7 @@ import {
   requsetUserInfoById,
   requestUserMenusByRoleId
 } from "@/service/login/login";
-import type { IAccount } from "@/service/login/type";
+import type { IAccount } from "@/service/login/types";
 import localCache from "@/utils/cache";
 import router from "@/router";
 
@@ -41,9 +41,6 @@ const useLoginStore = defineStore("login", {
       // 4.跳转到首页
       router.push("/main");
     },
-    // phoneLoginAction(payload: any) {
-    //   console.log("执行phoneLoginAction", payload);
-    // }
     loadLocalLogin() {
       const token = localCache.getCache("token");
       if (token) this.token = token;

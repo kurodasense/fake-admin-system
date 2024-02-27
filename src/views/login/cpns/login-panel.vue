@@ -38,7 +38,6 @@ import loginPhone from "./login-phone.vue";
 
 let isKeepPassword = ref(true);
 let accountRef = ref<InstanceType<typeof loginAccount>>();
-let phoneRef = ref<InstanceType<typeof loginPhone>>();
 let currentTab = ref<string>("account");
 
 function handleLoginClick() {

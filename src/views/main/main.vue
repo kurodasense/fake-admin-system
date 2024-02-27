@@ -64,6 +64,8 @@ const handleFoldChange = (isFold: boolean) => {
   .page-content {
     height: calc(100% -48px);
     .page-info {
+      display: flex;
+      text-align: center;
       background-color: #fff;
       border-radius: 5px;
     }

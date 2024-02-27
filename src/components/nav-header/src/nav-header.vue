@@ -5,21 +5,35 @@
       <Fold v-else />
     </el-icon>
     <div class="content">
-      <div>面包屑</div>
+      <hy-breadcrumb :breadcrumbs="breadcrumbs" />
       <user-info />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import UserInfo from "./user-info.vue";
+import HyBreadcrumb from "@/base-ui/breadcrumb";
+import useLoginStore from "@/stores/login/login";
+import { pathMapBreadcrumbs } from "@/utils/map-menus";
+import { useRoute } from "vue-router";
+
 const emit = defineEmits(["foldChange"]);
 const isFold = ref(false);
 const handleFoldClick = () => {
   isFold.value = !isFold.value;
   emit("foldChange", isFold.value);
 };
+
+// 面包屑数据
+const loginStore = useLoginStore();
+const route = useRoute();
+const breadcrumbs = computed(() => {
+  const userMenus = loginStore.userMenus;
+  const currentPath = route.path;
+  return pathMapBreadcrumbs(userMenus, currentPath);
+});
 </script>
 
 <style scoped lang="less">
