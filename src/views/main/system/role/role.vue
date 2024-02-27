@@ -1,10 +1,16 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="role">
-    <h2>role</h2>
+    <page-search :searchFormConfig="searchFormConfig" />
+    <page-content :contentTableConfig="contentTableConfig" pageName="role"> </page-content>
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import PageSearch from "@/components/page-search";
+import PageContent from "@/components/page-content";
+import { searchFormConfig } from "./config/search.config";
+import { contentTableConfig } from "./config/content.config";
+</script>
 
 <style scoped></style>

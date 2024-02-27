@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type PropType, ref, watch } from "vue";
+import { type PropType, ref, watch, computed } from "vue";
 import type { IFormItem } from "../types";
 const props = defineProps({
   formItems: {
@@ -81,6 +81,12 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 const formData = ref({ ...props.modelValue });
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    formData.value = { ...newValue };
+  }
+);
 watch(formData, (newValue) => emit("update:modelValue", newValue), { deep: true });
 </script>
 
