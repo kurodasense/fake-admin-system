@@ -7,7 +7,7 @@
       <template #footer>
         <div class="handle-btns">
           <el-button :icon="Refresh" @click="handleResetClick"> 重置</el-button>
-          <el-button type="primary" :icon="Search"> 搜索</el-button>
+          <el-button type="primary" :icon="Search" @click="handleQueryClick"> 搜索</el-button>
         </div>
       </template>
     </hy-form>
@@ -34,9 +34,17 @@ for (const item of formItems) {
 }
 const formData = ref(formOriginData);
 
-// 2
+const emit = defineEmits(["resetBtnClick", "queryBtnClick"]);
+
+// 2. 重置操作
 const handleResetClick = () => {
   formData.value = formOriginData;
+  emit("resetBtnClick");
+};
+
+// 3. 搜索功能
+const handleQueryClick = () => {
+  emit("queryBtnClick", formData.value);
 };
 </script>
 

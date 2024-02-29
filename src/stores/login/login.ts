@@ -8,13 +8,15 @@ import {
 import type { IAccount } from "@/service/login/types";
 import localCache from "@/utils/cache";
 import router from "@/router";
+import { mapMenusToPermissions } from "@/utils/map-menus";
 
 const useLoginStore = defineStore("login", {
   state: (): ILoginState => {
     return {
       token: "",
       userInfo: {},
-      userMenus: []
+      userMenus: [],
+      permissions: []
     };
   },
   getters: {},
@@ -36,8 +38,11 @@ const useLoginStore = defineStore("login", {
       const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id);
       const userMenus = userMenusResult.data;
       this.userMenus = userMenus;
-
       localCache.setCache("userMenus", userMenus);
+
+      // 获取用户按钮的权限
+      const permissions = mapMenusToPermissions(userMenus);
+      this.permissions = permissions;
       // 4.跳转到首页
       router.push("/main");
     },

@@ -1,9 +1,14 @@
 <template>
   <div class="page-content">
-    <hy-table :listData="dataList" v-bind="contentTableConfig">
+    <hy-table
+      :listData="dataList"
+      :listCount="dataCount"
+      v-bind="contentTableConfig"
+      v-model:page="pageInfo"
+    >
       <!-- 1. header中的插槽 -->
       <template #headerHandler>
-        <el-button type="primary">新建用户</el-button>
+        <el-button v-if="isCreate" type="primary">新建用户</el-button>
       </template>
       <!-- 2. 列中的插槽 -->
       <template #status="scope">
@@ -19,25 +24,18 @@
       </template>
       <template #handler>
         <div class="handle-btns">
-          <el-button icon="edit" size="small" link type="primary">编辑</el-button>
-          <el-button icon="delete" size="small" link type="primary">删除</el-button>
+          <el-button v-if="isUpdate" icon="edit" size="small" link type="primary">编辑</el-button>
+          <el-button v-if="isDelete" icon="delete" size="small" link type="primary">删除</el-button>
         </div>
       </template>
-      <!-- 3. footer中的插槽 -->
-      <template #footer>
-        <el-pagination
-          v-model:current-page="currentPage4"
-          v-model:page-size="pageSize4"
-          :page-sizes="[100, 200, 300, 400]"
-          :small="small"
-          :disabled="disabled"
-          :background="background"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
+      <!-- 在page-content中动态插入剩余的插槽 -->
+      <template v-for="item in otherPropsSlots" :key="item.prop" #[item.slotName]="scope">
+        <template v-if="item.slotName">
+          <slot :name="item.slotName" :row="scope.row"></slot>
+        </template>
       </template>
+      <!-- 3. footer中的插槽 -->
+      <template #footer> </template>
     </hy-table>
   </div>
 </template>
@@ -45,8 +43,8 @@
 <script lang="ts" setup>
 import HyTable from "@/base-ui/table";
 import useSystemStore from "@/stores/main/system/system";
-import { computed, inject } from "vue";
-
+import { computed, inject, ref, watch } from "vue";
+import { usePermission } from "@/hooks/use-permission";
 const props = defineProps({
   contentTableConfig: {
     type: Object,
@@ -61,9 +59,46 @@ const props = defineProps({
 const $filters = inject("$filters");
 
 const systemStore = useSystemStore();
-systemStore.getPageListAction({ pageName: props.pageName, queryInfo: { offset: 0, size: 100 } });
+// 从pinia中获取数据
 const dataList = computed(() => systemStore.pageListData(props.pageName));
-// const userCount = computed(() => systemStore.userCount);
+const dataCount = computed(() => systemStore.pageListCount(props.pageName));
+// 双向绑定pageInfo
+const pageInfo = ref({ currentPage: 0, pageSize: 10 });
+
+// 获取操作的权限
+const isCreate = usePermission(props.pageName, "create");
+const isUpdate = usePermission(props.pageName, "update");
+const isDelete = usePermission(props.pageName, "delete");
+const isQuery = usePermission(props.pageName, "query");
+
+// 发送网络请求
+const getPageData = (queryInfo: any = {}) => {
+  if (!isQuery) return;
+  systemStore.getPageListAction({
+    pageName: props.pageName,
+    queryInfo: {
+      offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+      size: pageInfo.value.pageSize,
+      ...queryInfo
+    }
+  });
+};
+
+// 获取其他的动态插槽名称
+const otherPropsSlots = props.contentTableConfig.propList.filter((item: any) => {
+  if (item.slotName === "status") return false;
+  if (item.slotName === "createAt") return false;
+  if (item.slotName === "updateAt") return false;
+  if (item.slotName === "handler") return false;
+  return true;
+});
+
+watch(pageInfo, () => {
+  getPageData();
+});
+getPageData();
+
+defineExpose({ getPageData });
 </script>
 
 <style lang="less" scoped>

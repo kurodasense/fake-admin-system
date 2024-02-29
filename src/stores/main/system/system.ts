@@ -8,13 +8,22 @@ const useSystemStore = defineStore("system", {
       usersList: [],
       usersCount: 0,
       roleList: [],
-      roleCount: 0
+      roleCount: 0,
+      goodsList: [],
+      goodsCount: 0,
+      menuList: [],
+      menuCount: 0
     };
   },
   getters: {
     pageListData: (state) => {
       return (pageName: string) => {
         return (state as any)[`${pageName}List`];
+      };
+    },
+    pageListCount: (state) => {
+      return (pageName: string) => {
+        return (state as any)[`${pageName}Count`];
       };
     }
   },
@@ -23,20 +32,10 @@ const useSystemStore = defineStore("system", {
       // 1. 获取pageUrl
       const pageName = payload.pageName;
       const pageUrl = `${pageName}/list`;
-      // switch (pageName) {
-      //   case "users":
-      //     pageUrl = "/users/list";
-      //     break;
-      //   case "role":
-      //     pageUrl = "/role/list";
-      //     break;
-      // }
       // 2. 对页面发送请求
       const pageResult = await getPageListData(pageUrl, payload.queryInfo);
-      console.log(pageResult);
       // 3. 存储数据到state
       const { list, totalCount } = pageResult.data;
-      // const changePageName = pageName.slice(0, 1).toUpperCase() + pageName.slice(1);
       switch (pageName) {
         case "users":
           this.usersList = list;
@@ -45,6 +44,14 @@ const useSystemStore = defineStore("system", {
         case "role":
           this.roleList = list;
           this.roleCount = totalCount;
+          break;
+        case "goods":
+          this.goodsList = list;
+          this.goodsCount = totalCount;
+          break;
+        case "menu":
+          this.menuList = list;
+          this.menuCount = totalCount;
           break;
       }
     }

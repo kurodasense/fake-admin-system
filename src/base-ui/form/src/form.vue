@@ -14,14 +14,16 @@
                   :placeholder="item.placeholder"
                   :show-password="item.type == 'password'"
                   v-bind="{ ...item.otherOptions }"
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
                 />
               </template>
               <template v-else-if="item.type == 'select'">
                 <el-select
                   :placeholder="item.placeholder"
                   v-bind="{ ...item.otherOptions }"
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
                 >
                   <el-option
                     v-for="option in item.options"
@@ -36,7 +38,8 @@
                 <el-date-picker
                   style="width: 100%"
                   v-bind="{ ...item.otherOptions }"
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
                 ></el-date-picker>
               </template>
             </el-form-item>
@@ -80,14 +83,10 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update:modelValue"]);
-const formData = ref({ ...props.modelValue });
-watch(
-  () => props.modelValue,
-  (newValue) => {
-    formData.value = { ...newValue };
-  }
-);
-watch(formData, (newValue) => emit("update:modelValue", newValue), { deep: true });
+
+const handleValueChange = (value: any, field: string) => {
+  emit("update:modelValue", { ...props.modelValue, [field]: value });
+};
 </script>
 
 <style scoped lang="less">
