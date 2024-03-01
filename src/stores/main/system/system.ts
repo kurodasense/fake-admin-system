@@ -1,6 +1,11 @@
 import { defineStore } from "pinia";
 import type { ISystemState } from "./types";
-import { getPageListData } from "@/service/main/system/system";
+import {
+  getPageListData,
+  deletePageData,
+  createPageData,
+  editPageData
+} from "@/service/main/system/system";
 
 const useSystemStore = defineStore("system", {
   state: (): ISystemState => {
@@ -54,6 +59,33 @@ const useSystemStore = defineStore("system", {
           this.menuCount = totalCount;
           break;
       }
+    },
+    async deletePageDataAction(payload: any) {
+      // 1. 获取pageName和id
+      // pageName -> /users
+      // id --> /users/id
+      const { pageName, id } = payload;
+      const pageUrl = `/${pageName}/${id}`;
+      // 2. 调用删除的网络请求
+      await deletePageData(pageUrl);
+      // 3. 重新请求最新的数据
+      this.getPageListAction({ pageName, queryInfo: { offset: 0, size: 10 } });
+    },
+    async createPageDataAction(payload: any) {
+      // 1. 创建数据的请求
+      const { pageName, newData } = payload;
+      const pageUrl = `/${pageName}`;
+      await createPageData(pageUrl, newData);
+      // 2. 请求最新的数据
+      this.getPageListAction({ pageName, queryInfo: { offset: 0, size: 10 } });
+    },
+    async editPageDataAction(payload: any) {
+      // 1. 编辑数据的请求
+      const { pageName, editData, id } = payload;
+      const pageUrl = `/${pageName}/${id}`;
+      await editPageData(pageUrl, editData);
+      // 2. 请求最新的数据
+      this.getPageListAction({ pageName, queryInfo: { offset: 0, size: 10 } });
     }
   }
 });

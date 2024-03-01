@@ -9,7 +9,7 @@ import type { IAccount } from "@/service/login/types";
 import localCache from "@/utils/cache";
 import router from "@/router";
 import { mapMenusToPermissions } from "@/utils/map-menus";
-
+import useRootStore from "..";
 const useLoginStore = defineStore("login", {
   state: (): ILoginState => {
     return {
@@ -28,6 +28,10 @@ const useLoginStore = defineStore("login", {
       this.token = token;
       localCache.setCache("token", token);
 
+      // 发送初始化的请求(完整的role/department)
+      const rootState = useRootStore();
+      rootState.getInitialDataAction();
+
       // 2. 请求用户信息
       const userInfoResult = await requsetUserInfoById(id);
       const userInfo = userInfoResult.data;
@@ -43,16 +47,23 @@ const useLoginStore = defineStore("login", {
       // 获取用户按钮的权限
       const permissions = mapMenusToPermissions(userMenus);
       this.permissions = permissions;
+      localCache.setCache("permissions", permissions);
       // 4.跳转到首页
       router.push("/main");
     },
     loadLocalLogin() {
       const token = localCache.getCache("token");
-      if (token) this.token = token;
+      if (token) {
+        this.token = token;
+        const rootState = useRootStore();
+        rootState.getInitialDataAction();
+      }
       const userInfo = localCache.getCache("userInfo");
-      if (userInfo) this.userMenus = userInfo;
+      if (userInfo) this.userInfo = userInfo;
       const userMenus = localCache.getCache("userMenus");
       if (userMenus) this.userMenus = userMenus;
+      const permissions = localCache.getCache("permissions");
+      if (permissions) this.permissions = permissions;
     }
   }
 });

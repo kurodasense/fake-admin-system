@@ -5,7 +5,7 @@ import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./router";
 import "normalize.css";
-import useLoginStore from "@/stores/login/login";
+import useRootState from "@/stores";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import { mapMenusToRoutes } from "@/utils/map-menus";
 import type { RouteRecordRaw } from "vue-router";
@@ -28,7 +28,7 @@ async function boot() {
     router.addRoute("main", route);
   });
   app.use(createPinia());
-  useLoginStore().loadLocalLogin();
+  useRootState().setupStore();
 
   app.use(router).mount("#app");
 }

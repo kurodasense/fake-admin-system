@@ -8,7 +8,12 @@
       <el-row>
         <template v-for="item in props.formItems" :key="item.label">
           <el-col v-bind="colLayout">
-            <el-form-item :label="item.label" :rules="item.rules" :style="itemStyle">
+            <el-form-item
+              v-if="!item.isHidden"
+              :label="item.label"
+              :rules="item.rules"
+              :style="itemStyle"
+            >
               <template v-if="item.type == 'input' || item.type == 'password'">
                 <el-input
                   :placeholder="item.placeholder"

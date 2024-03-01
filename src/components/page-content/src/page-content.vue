@@ -8,7 +8,7 @@
     >
       <!-- 1. header中的插槽 -->
       <template #headerHandler>
-        <el-button v-if="isCreate" type="primary">新建用户</el-button>
+        <el-button v-if="isCreate" type="primary" @click="handleNewClick">新建数据</el-button>
       </template>
       <!-- 2. 列中的插槽 -->
       <template #status="scope">
@@ -22,10 +22,26 @@
       <template #updateAt="scope">
         <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
       </template>
-      <template #handler>
+      <template #handler="scope">
         <div class="handle-btns">
-          <el-button v-if="isUpdate" icon="edit" size="small" link type="primary">编辑</el-button>
-          <el-button v-if="isDelete" icon="delete" size="small" link type="primary">删除</el-button>
+          <el-button
+            v-if="isUpdate"
+            icon="edit"
+            size="small"
+            link
+            type="primary"
+            @click="handleEditClick(scope.row)"
+            >编辑</el-button
+          >
+          <el-button
+            v-if="isDelete"
+            icon="delete"
+            size="small"
+            link
+            type="primary"
+            @click="handleDeleteClick(scope.row)"
+            >删除</el-button
+          >
         </div>
       </template>
       <!-- 在page-content中动态插入剩余的插槽 -->
@@ -45,6 +61,9 @@ import HyTable from "@/base-ui/table";
 import useSystemStore from "@/stores/main/system/system";
 import { computed, inject, ref, watch } from "vue";
 import { usePermission } from "@/hooks/use-permission";
+
+const emit = defineEmits(["newBtnClick", "editBtnClick"]);
+
 const props = defineProps({
   contentTableConfig: {
     type: Object,
@@ -59,11 +78,9 @@ const props = defineProps({
 const $filters = inject("$filters");
 
 const systemStore = useSystemStore();
-// 从pinia中获取数据
-const dataList = computed(() => systemStore.pageListData(props.pageName));
-const dataCount = computed(() => systemStore.pageListCount(props.pageName));
+
 // 双向绑定pageInfo
-const pageInfo = ref({ currentPage: 0, pageSize: 10 });
+const pageInfo = ref({ currentPage: 1, pageSize: 10 });
 
 // 获取操作的权限
 const isCreate = usePermission(props.pageName, "create");
@@ -77,12 +94,16 @@ const getPageData = (queryInfo: any = {}) => {
   systemStore.getPageListAction({
     pageName: props.pageName,
     queryInfo: {
-      offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+      offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
       size: pageInfo.value.pageSize,
       ...queryInfo
     }
   });
 };
+
+// 从pinia中获取数据
+const dataList = computed(() => systemStore.pageListData(props.pageName));
+const dataCount = computed(() => systemStore.pageListCount(props.pageName));
 
 // 获取其他的动态插槽名称
 const otherPropsSlots = props.contentTableConfig.propList.filter((item: any) => {
@@ -93,9 +114,22 @@ const otherPropsSlots = props.contentTableConfig.propList.filter((item: any) => 
   return true;
 });
 
+// 删除操作
+const handleDeleteClick = (item: any) => {
+  systemStore.deletePageDataAction({ pageName: props.pageName, id: item.id });
+};
+// 新建操作
+const handleNewClick = () => {
+  emit("newBtnClick");
+};
+// 编辑操作
+const handleEditClick = (item: any) => {
+  emit("editBtnClick", item);
+};
 watch(pageInfo, () => {
   getPageData();
 });
+
 getPageData();
 
 defineExpose({ getPageData });
