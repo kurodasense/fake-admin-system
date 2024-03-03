@@ -1,6 +1,6 @@
-# learn-vue3-cms
+# fake-admin-system
 
-This template should help get you started developing with Vue 3 in Vite.
+a diy management system for learning Vue3+Vite.
 
 ## Recommended IDE Setup
 
