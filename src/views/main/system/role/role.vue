@@ -71,6 +71,9 @@ const handleCheckChange = (data1: any, data2: any) => {
 </script>
 
 <style scoped lang="less">
+.role {
+  width: 100%;
+}
 .menu-tree {
   margin-left: 25px;
 }

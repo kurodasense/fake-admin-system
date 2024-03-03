@@ -57,6 +57,8 @@ const handleFoldChange = (isFold: boolean) => {
   }
 }
 .page {
+  width: 100%;
+  height: 100%;
   .page-header {
     display: flex;
     align-items: center;

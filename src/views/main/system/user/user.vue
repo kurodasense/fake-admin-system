@@ -75,4 +75,8 @@ const [pageModalRef, defaultInfo, handleNewData, handleEditData] = usePageModal(
 );
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.user {
+  width: 100%;
+}
+</style>

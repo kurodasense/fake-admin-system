@@ -10,4 +10,8 @@ import PageContent from "@/components/page-content";
 import { contentTableConfig } from "./config/content.config";
 </script>
 
-<style scoped></style>
+<style scoped>
+.menu {
+  width: 100%;
+}
+</style>

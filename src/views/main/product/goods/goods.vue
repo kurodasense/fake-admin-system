@@ -10,6 +10,7 @@
           :max-scale="7"
           :min-scale="0.2"
           :preview-src-list="[scope.row.imgUrl]"
+          :preview-teleported="true"
           fit="cover"
         />
       </template>
@@ -23,4 +24,8 @@ import { contentTableConfig } from "./config/content.config";
 import PageContent from "@/components/page-content";
 </script>
 
-<style scoped></style>
+<style>
+.el-table__fixed-body-wrapper {
+  z-index: auto !important;
+}
+</style>
