@@ -2,7 +2,7 @@
   <div class="nav-menu">
     <div class="logo">
       <img src="~@/assets/img/logo.svg" alt="logo" class="img" />
-      <span v-if="!props.collapse" class="title">Vue3 + TS</span>
+      <span v-if="!props.collapse" class="title">Fake-Admin</span>
     </div>
     <el-menu
       :default-active="defaultValue"

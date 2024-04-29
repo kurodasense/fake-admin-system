@@ -7,7 +7,7 @@ export async function mapMenusToRoutes(userMenus: any[]): Promise<RouteRecordRaw
   const routes: RouteRecordRaw[] = [];
   // 1. 先去加载默认所有的routes
   const allRoutes: RouteRecordRaw[] = [];
-  const routeFiles = import.meta.glob("../router/main/**/*.ts");
+  const routeFiles = import.meta.glob("../router/main/**/*.ts"); // 导入所有的路由文件
   for (const path in routeFiles) {
     const route: any = await routeFiles[path]();
     allRoutes.push(route.default);
