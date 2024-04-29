@@ -37,18 +37,20 @@
 import useDashboardStore from "@/stores/main/analysis/dashboard";
 import Card from "@/base-ui/card";
 import { PieEchart, RoseEchart, LineEchart, BarEchart, mapEchart } from "@/components/page-echarts";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 
 const dashboardStore = useDashboardStore();
-// 请求数据
+
 dashboardStore.getDashboardDataAction();
-// 获取数据
+
+// 分类商品数量
 const categoryGoodsCount = computed(() => {
   return dashboardStore.categoryGoodsCount.map((item) => ({
     name: item.name,
     value: item.goodsCount
   }));
 });
+// 分类商品的销量
 const categoryGoodsSale = computed(() => {
   const xLabels: string[] = [];
   const values: any[] = [];
@@ -59,9 +61,7 @@ const categoryGoodsSale = computed(() => {
   }
   return { xLabels, values };
 });
-
-// const categoryGoodsFavor = ref({});
-
+// 分类商品的收藏
 const categoryGoodsFavor = computed(() => {
   const xLabels: string[] = [];
   const values: any[] = [];
@@ -70,10 +70,9 @@ const categoryGoodsFavor = computed(() => {
     xLabels.push(item.name);
     values.push(item.goodsFavor);
   }
-  console.log(xLabels, values);
   return { xLabels, values };
 });
-
+// 不同城市商品销量
 const addressGoodsSale = computed(() => {
   return dashboardStore.addressGoodsSale.map((item) => {
     return { name: item.address, value: item.count };
@@ -81,7 +80,7 @@ const addressGoodsSale = computed(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .dashboard {
   width: 100%;
   .content-row {

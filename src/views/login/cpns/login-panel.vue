@@ -45,6 +45,7 @@ function handleLoginClick() {
     accountRef.value?.loginAction(isKeepPassword.value);
   } else {
     console.log("phoneRef调用loginAction");
+    // todo
   }
 }
 </script>

@@ -17,7 +17,6 @@ const props = withDefaults(
     title: ""
   }
 );
-console.log(props.xLabels, props.values);
 const options: any = {
   xAxis: {
     data: props.xLabels,
