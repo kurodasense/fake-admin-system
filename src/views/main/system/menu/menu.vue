@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="menu">
-    <page-content :contentTableConfig="contentTableConfig" pageName="menu"> </page-content>
+    <page-content :contentTableConfig="contentTableConfig" pageName="menu" />
   </div>
 </template>
 

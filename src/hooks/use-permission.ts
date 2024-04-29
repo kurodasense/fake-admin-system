@@ -4,8 +4,6 @@ export function usePermission(pageName: string, handleName: string) {
   const loginStore = useLoginStore();
   const permissions = loginStore.permissions;
   const verifyPermission = `system:${pageName}:${handleName}`;
-  // name = 'coderwhy'
-  // !name -> false
-  // !!name -> true
+  // !! -> ts中强行转换为boolean
   return !!permissions.find((item) => item === verifyPermission);
 }

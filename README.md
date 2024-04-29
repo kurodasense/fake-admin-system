@@ -44,7 +44,30 @@
 
 ![alt text](./project_images/product_summary.png)
 
-### 用户管理
-像高级检索这个组件和新建数据时的弹框是重复组件，它们就额外抽出来作为单独组件进行封装。然后定义数据对象的interface，通过写配置文件config.ts的方式来导入所需要的属性，进而实现快速开发。组件内规范了想要调用的事件名称，使用emit来发送事件，父组件就监听emit并执行相应的函数。
+### 系统管理
+#### 预设框架图
+![alt text](./project_images/frame.png)
 
+像"高级检索"、用户列表中的"表格"、"新建数据时的弹框"、"分页"这些都是重复组件，它们就额外抽出来作为单独组件进行封装。然后定义数据对象的interface，通过写配置文件config.ts的方式来导入所需要的属性，进而实现快速开发。组件内规范了想要调用的事件名称，使用emit来发送事件，父组件就监听emit并执行相应的函数。
+* 在page-search中，点击搜索会重新发送请求去拿数据。里面所展示的输入框由配置文件动态插入，里面用colLayout来动态设置每一行放多少个输入框，然后用form-item来表示每个输入框的类型。
+* page-content包括了table和分页栏
+  * 在table中，会先判断当前用户的权限，然后来展示不同的可操作的按钮，比如右上角的"新建数据"，操作中的"编辑"和"删除"等。
+    * 比如：像后端会返回来这种格式`system:menu:create`的字符串来表示当前用户的权限，那么就是允许在系统管理->菜单管理->创建新的菜单。
+  * 编辑后或者删除后都重新发送请求来拿数据。
+  * 分页组件中存储了当前页码currentPage与一页所展示的数量pageSize，使用v-model来在page-content中实现双向绑定。同时用watch监听这两个值的变化，如果变化了，就重新发请求拿数据。
+* 在封装重复组件的时候，也对modal和search这两个组件的操作用函数做了封装，就是在里面封装了ref的引用，并且返回对按钮的操作方法。最后使用的时候直接进行v-bind就行。
+  * 比如说，在usePageSearch()中，该方法会返回page-modal组件的引用，和reset+query查询的两个方法，最后在父组件中使用时只要将其绑定到Modal子组件上就行了。
+#### 用户管理
 ![alt text](./project_images/user_admin.png)
+#### 菜单管理
+![alt text](/project_images/menu_admin.png)
+菜单管理就没有做新建和修改的按钮，这部分其实就是对应着左侧nav的menu，这部分是不变的。
+#### 角色管理
+![alt text](./project_images/role_admin.png)
+角色管理的布局也是和一样的。
+
+### 商品中心
+#### 商品信息
+![alt text](./project_images/product_info.png)
+
+这部分的布局也是跟系统管理的一样

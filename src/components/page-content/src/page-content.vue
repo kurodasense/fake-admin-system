@@ -1,6 +1,6 @@
 <template>
   <div class="page-content">
-    <hy-table
+    <Table
       :listData="dataList"
       :listCount="dataCount"
       v-bind="contentTableConfig"
@@ -8,7 +8,9 @@
     >
       <!-- 1. header中的插槽 -->
       <template #headerHandler>
-        <el-button v-if="isCreate" type="primary" @click="handleNewClick">新建数据</el-button>
+        <el-button v-if="isCreate && pageName !== 'menu'" type="primary" @click="handleNewClick"
+          >新建数据</el-button
+        >
       </template>
       <!-- 2. 列中的插槽 -->
       <template #status="scope">
@@ -52,12 +54,12 @@
       </template>
       <!-- 3. footer中的插槽 -->
       <template #footer> </template>
-    </hy-table>
+    </Table>
   </div>
 </template>
 
 <script lang="ts" setup>
-import HyTable from "@/base-ui/table";
+import Table from "@/base-ui/table";
 import useSystemStore from "@/stores/main/system/system";
 import { computed, inject, ref, watch } from "vue";
 import { usePermission } from "@/hooks/use-permission";

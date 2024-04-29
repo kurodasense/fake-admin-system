@@ -24,7 +24,10 @@ import { contentTableConfig } from "./config/content.config";
 import PageContent from "@/components/page-content";
 </script>
 
-<style>
+<style lang="less">
+.goods {
+  width: 100%;
+}
 .el-table__fixed-body-wrapper {
   z-index: auto !important;
 }
