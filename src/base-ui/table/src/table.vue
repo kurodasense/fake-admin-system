@@ -16,12 +16,14 @@
       @selection-change="handleSelectChange"
       v-bind="childrenProps"
     >
+      <!-- 选择框 -->
       <el-table-column
         v-if="showSelectColumn"
         type="selection"
         align="center"
         width="60"
       ></el-table-column>
+      <!-- 序号 -->
       <el-table-column
         v-if="showIndexColumn"
         type="index"
@@ -29,6 +31,7 @@
         align="center"
         width="60"
       ></el-table-column>
+      <!-- 其余的列动态决定 -->
       <template v-for="propItem in propList" :key="propItem.prop">
         <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
           <template #default="scope">

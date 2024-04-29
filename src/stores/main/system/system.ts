@@ -17,7 +17,9 @@ const useSystemStore = defineStore("system", {
       goodsList: [],
       goodsCount: 0,
       menuList: [],
-      menuCount: 0
+      menuCount: 0,
+      categoryList: [],
+      categoryCount: 0
     };
   },
   getters: {
@@ -41,6 +43,7 @@ const useSystemStore = defineStore("system", {
       const pageResult = await getPageListData(pageUrl, payload.queryInfo);
       // 3. 存储数据到state
       const { list, totalCount } = pageResult.data;
+
       switch (pageName) {
         case "users":
           this.usersList = list;
@@ -57,6 +60,10 @@ const useSystemStore = defineStore("system", {
         case "menu":
           this.menuList = list;
           this.menuCount = totalCount;
+          break;
+        case "category":
+          this.categoryList = list;
+          this.categoryCount = totalCount;
           break;
       }
     },

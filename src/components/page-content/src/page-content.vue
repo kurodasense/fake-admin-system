@@ -13,17 +13,21 @@
         >
       </template>
       <!-- 2. 列中的插槽 -->
+      <!-- 状态列 -->
       <template #status="scope">
         <el-button plain size="small" :type="scope.row.enable ? 'success' : 'danger'">{{
           scope.row.enable ? "启用" : "禁用"
         }}</el-button>
       </template>
+      <!-- 创建时间 -->
       <template #createAt="scope">
         <span>{{ $filters.formatTime(scope.row.createAt) }}</span>
       </template>
+      <!-- 更新时间 -->
       <template #updateAt="scope">
         <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
       </template>
+      <!-- 操作列 -->
       <template #handler="scope">
         <div class="handle-btns">
           <el-button

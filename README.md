@@ -67,7 +67,10 @@
 角色管理的布局也是和一样的。
 
 ### 商品中心
+这部分的布局也是跟系统管理的一样
+#### 商品类别
+![alt text](./project_images/product_catagory.png)
+
 #### 商品信息
 ![alt text](./project_images/product_info.png)
 
-这部分的布局也是跟系统管理的一样

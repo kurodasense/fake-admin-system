@@ -4,7 +4,7 @@ import PageModal from "@/components/page-modal";
 type CallbackFn = (item?: any) => void;
 
 export function usePageModal(newCb?: CallbackFn, editCb?: CallbackFn) {
-  const pageModalRef = ref<InstanceType<typeof PageModal>>();
+  const pageModalRef = ref<InstanceType<typeof PageModal>>(); // PageModal的引用
   const defaultInfo = ref({});
   const handleNewData = () => {
     defaultInfo.value = {};
@@ -17,6 +17,5 @@ export function usePageModal(newCb?: CallbackFn, editCb?: CallbackFn) {
     if (pageModalRef.value) pageModalRef.value.dialogVisible = true;
     editCb && editCb(item);
   };
-  console.log(defaultInfo.value);
   return [pageModalRef, defaultInfo, handleNewData, handleEditData];
 }
