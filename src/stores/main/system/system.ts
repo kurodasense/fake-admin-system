@@ -19,7 +19,9 @@ const useSystemStore = defineStore("system", {
       menuList: [],
       menuCount: 0,
       categoryList: [],
-      categoryCount: 0
+      categoryCount: 0,
+      departmentList: [],
+      departmentCount: 0
     };
   },
   getters: {
@@ -64,6 +66,11 @@ const useSystemStore = defineStore("system", {
         case "category":
           this.categoryList = list;
           this.categoryCount = totalCount;
+          break;
+        case "department":
+          this.departmentList = list;
+          console.log(list);
+          this.departmentCount = totalCount;
           break;
       }
     },

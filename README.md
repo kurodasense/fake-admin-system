@@ -44,6 +44,7 @@
 
 ![alt text](./project_images/product_summary.png)
 
+
 ### 系统管理
 #### 预设框架图
 ![alt text](./project_images/frame.png)
@@ -52,13 +53,15 @@
 * 在page-search中，点击搜索会重新发送请求去拿数据。里面所展示的输入框由配置文件动态插入，里面用colLayout来动态设置每一行放多少个输入框，然后用form-item来表示每个输入框的类型。
 * page-content包括了table和分页栏
   * 在table中，会先判断当前用户的权限，然后来展示不同的可操作的按钮，比如右上角的"新建数据"，操作中的"编辑"和"删除"等。
-    * 比如：像后端会返回来这种格式`system:menu:create`的字符串来表示当前用户的权限，那么就是允许在系统管理->菜单管理->创建新的菜单。
+    * 比如：像后端会返回来这种格式`system:menu:create`的字符串来表示当前用户的权限，其意思是允许在系统管理->菜单管理->创建新的菜单信息。
   * 编辑后或者删除后都重新发送请求来拿数据。
   * 分页组件中存储了当前页码currentPage与一页所展示的数量pageSize，使用v-model来在page-content中实现双向绑定。同时用watch监听这两个值的变化，如果变化了，就重新发请求拿数据。
 * 在封装重复组件的时候，也对modal和search这两个组件的操作用函数做了封装，就是在里面封装了ref的引用，并且返回对按钮的操作方法。最后使用的时候直接进行v-bind就行。
   * 比如说，在usePageSearch()中，该方法会返回page-modal组件的引用，和reset+query查询的两个方法，最后在父组件中使用时只要将其绑定到Modal子组件上就行了。
 #### 用户管理
 ![alt text](./project_images/user_admin.png)
+#### 部门管理
+![alt text](./project_images/department_admin.png)
 #### 菜单管理
 ![alt text](/project_images/menu_admin.png)
 菜单管理就没有做新建和修改的按钮，这部分其实就是对应着左侧nav的menu，这部分是不变的。
