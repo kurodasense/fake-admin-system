@@ -1,5 +1,5 @@
 # fake-admin-system
-一个检验学习成果的网页后台管理系统。实现了一些核心功能页面，剩下的页面等平时抽空做完。
+一个检验学习成果的网页后台管理系统，照着从网上~~偷来~~的后端接口文档做的，学习了部分封装实现思想。目前已将所有的核心功能页面实现，但是有些页面由于后端没有实现所以就做不了了。
 
 技术栈：Vite+Vue3+TypeScript+Pinia+Axios+Element-Plus+Echarts：
 * 使用Element-Plus组件库来设计页面的样式，对每个页面中重用的组件进行封装。
@@ -62,6 +62,10 @@
 ![alt text](./project_images/user_admin.png)
 #### 部门管理
 ![alt text](./project_images/department_admin.png)
+![alt text](./project_images/department_admin_select.png)
+在这个页面中有一个上级部门，从服务器传回来的数据显示的是parentId，就是是一个数字。其实只显示数字的话是不好让人理解的，但是后端又没有改，所以这部分只能动态改变。
+* 对于modal：拿到modal.config的引用，并且拿到里面的parentId的item选项。由于parentId的选择是由select选择框来显示的，所以将pinia中的entireDepartment的内容放到里面去。
+* 对于content的显示，我一开始打算拿到里面的parentId的值然后再匹配其department的name来显示。结果我觉得好像实现起来有点麻烦，这得要在封装好的组件中做一些适应的修改。因此最后就没改了，我感觉应该就是后端接口实现没弄好了。
 #### 菜单管理
 ![alt text](/project_images/menu_admin.png)
 菜单管理就没有做新建和修改的按钮，这部分其实就是对应着左侧nav的menu，这部分是不变的。
@@ -76,4 +80,5 @@
 
 #### 商品信息
 ![alt text](./project_images/product_info.png)
+
 

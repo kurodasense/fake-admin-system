@@ -4,7 +4,8 @@ import {
   getPageListData,
   deletePageData,
   createPageData,
-  editPageData
+  editPageData,
+  getStoryListData
 } from "@/service/main/system/system";
 
 const useSystemStore = defineStore("system", {
@@ -21,7 +22,9 @@ const useSystemStore = defineStore("system", {
       categoryList: [],
       categoryCount: 0,
       departmentList: [],
-      departmentCount: 0
+      departmentCount: 0,
+      storyList: [],
+      storyCount: 0
     };
   },
   getters: {
@@ -40,12 +43,16 @@ const useSystemStore = defineStore("system", {
     async getPageListAction(payload: any) {
       // 1. 获取pageUrl
       const pageName = payload.pageName;
-      const pageUrl = `${pageName}/list`;
+      let pageUrl = "";
+      if (pageName == "story") pageUrl = `${pageName}`;
+      else pageUrl = `${pageName}/list`;
       // 2. 对页面发送请求
-      const pageResult = await getPageListData(pageUrl, payload.queryInfo);
+      let pageResult: any = {};
+      if (pageName == "story") pageResult = getStoryListData(pageUrl);
+      else pageResult = await getPageListData(pageUrl, payload.queryInfo);
+      console.log(pageResult);
       // 3. 存储数据到state
       const { list, totalCount } = pageResult.data;
-
       switch (pageName) {
         case "users":
           this.usersList = list;
@@ -69,8 +76,11 @@ const useSystemStore = defineStore("system", {
           break;
         case "department":
           this.departmentList = list;
-          console.log(list);
           this.departmentCount = totalCount;
+          break;
+        case "story":
+          this.storyList = list;
+          this.storyCount = totalCount;
           break;
       }
     },

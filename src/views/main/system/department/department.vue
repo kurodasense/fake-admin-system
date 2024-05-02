@@ -39,7 +39,7 @@ const [pageModalRef, defaultInfo, handleNewData, handleEditData] = usePageModal(
 
 const rootStore = useRootStore();
 
-// 动态添加上级部门列表
+// 动态添加modal的上级部门列表显示(默认为parentId)
 const modalConfigRef = computed(() => {
   const departmentItem = modalConfig.formItems.find((item) => item.field == "parentId");
   departmentItem!.options = rootStore.entireDepartment.map((item) => {
@@ -48,7 +48,6 @@ const modalConfigRef = computed(() => {
       value: item.id
     };
   });
-
   return modalConfig;
 });
 </script>
